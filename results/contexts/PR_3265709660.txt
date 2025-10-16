@@ -1,0 +1,186 @@
+
+Context for PR #3265709660
+Primary language: TypeScript
+
+PR title:
+feat: add comprehensive README screenshots with optimized layout
+
+PR body:
+## Type of Change
+
+- [ ] 🐛 `bug` - Bug fix (non-breaking change which fixes an issue)
+- [x] ✨ `feature` - New feature (non-breaking change which adds functionality)
+- [ ] 💥 `breaking` - Breaking change
+- [x] 📚 `documentation` - Documentation update
+- [ ] ⚡ `performance` - Performance improvement
+- [ ] 🔨 `refactor` - Code refactoring
+- [ ] 🧪 `test` - Adding or updating tests
+- [ ] 🔧 `chore` - Maintenance, dependencies, tooling
+- [ ] 🖥️ `backend` - Backend-related changes
+- [x] 🎨 `frontend` - Fron
+...
+aptures screenshots at specific demo moments
+- **Responsive design showcase**: Mobile viewport demonstrates touch-friendly interface
+- **Permission dialog display**: Shows tool authorization workflow
+- **Syntax highlighting**: Code generation scenarios display rich formatting
+
+This provides users with immediate visual understanding of the interface before trying the demo video or installation.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Diff summary:
+README.md
+@@ -10,6 +10,31 @@
+ 
+ [🎬 **View Demo**](https://github.com/user-attachments/assets/35dd960c-ed1a-43ee-927d-ca9cdb490855)
+ 
++## 📱 Screenshots
++
++<div align="center">
++
++| Desktop Interface             
+...
+                                          | _Mobile-optimized light theme_                                                                    |
++
++</div>
++
++</details>
++
+ ---
+ 
+ ## 📑 Table of Contents
+docs/images/screenshot-desktop-codeGeneration-dark.png
+
+docs/images/screenshot-desktop-codeGeneration.png
+
+docs/images/screenshot-desktop-fileOperations-dark.png
+
+docs/images/screenshot-desktop-fileOperations.png
+
+docs/images/screenshot-mobile-codeGeneration-dark.png
+
+docs/images/screenshot-mobile-codeGeneration.png
+
+docs/images/screenshot-mobile-fileOperations-dark.png
+
+docs/images/screenshot-mobile-fileOperations.png
+
+frontend/package.json
+@@ -17,7 +17,8 @@
+     "test": "vitest",
+     "test:run": "vitest run",
+     "playwright:install": "npx playwright install",
+-    "record-demo": "npx tsx scripts/record-demo.ts"
++    "record-demo": "npx tsx scripts/record-demo.ts",
++    "capture-screenshots": "npx tsx scripts/capture-screenshots.ts"
+   },
+   "dependencies": {
+     "@heroicons/react": "^2.2.0",
+frontend/scripts/capture-screenshots.ts
+@@ -0,0 +1,236 @@
++#!/usr/bin/env node
++
++import { chromium } from "playwright";
++import { existsSync, mkdirSync } from "fs";
++import { join } from "path";
++import { type DemoScenario, type Theme } fr
+...
++    device,
++  });
++}
++
++if (import.meta.url === `file://${process.argv[1]}`) {
++  main().catch((error) => {
++    console.error("❌ Screenshot capture failed:", error);
++    process.exit(1);
++  });
++}
+frontend/scripts/capture-screenshots.ts
+@@ -24,15 +24,15 @@ interface ViewportSize {
+ 
+ const VIEWPORTS: Record<"desktop" | "mobile", ViewportSize> = {
+   desktop: { width: 1400, height: 900 }, // More suitable for README display
+-  mobile:
+...
+"fileOperations"];
++  const scenarios: DemoScenario[] = ["basic", "codeGeneration"];
+   const themes: Theme[] = ["light", "dark"];
+   const devices: ("desktop" | "mobile")[] = ["desktop", "mobile"];
+ 
+README.md
+@@ -14,10 +14,10 @@
+ 
+ <div align="center">
+ 
+-| Desktop Interface                                                                                      | Mobile Experience                             
+...
+with granular permission controls and clear approval workflow_                     | _Touch-optimized permission interface for mobile devices_                                             |
+ 
+ </div>
+ 
+docs/images/screenshot-desktop-basic-dark.png
+
+docs/images/screenshot-desktop-basic.png
+
+docs/images/screenshot-mobile-basic-dark.png
+
+docs/images/screenshot-mobile-basic.png
+
+docs/images/screenshot-mobile-fileOperations-dark.png
+
+
+First failing CI snippet:
+
+
+Top review comments:
+## Pull Request Overview
+
+This PR adds a comprehensive screenshot documentation system to showcase the Claude Code Web UI interface. It introduces an automated screenshot capture workflow using Playwright and displays professional desktop/mobile screenshots in an optimized table layout within the README.
+
+- Automated screenshot capture system with Playwright for consistent documentation
+- Professional desktop (1400x900) and mobile (375x812) screenshots showcasing key interface features
+- Optimized README layout with table-based comparison and collapsible light theme section
+
+### Reviewed Changes
+
+Copilot reviewed 3 out of 11 changed files in this pull request and generated 2 comments.
+
+| File | Description |
+| ---- | ----------- |
+| `frontend/scripts/capture-screenshots.ts` | New Playwright-based screenshot automation script with viewport management and demo integration |
+| `frontend/package.json` | Added npm script command for screenshot capture workflow |
+| `README.md` | Enhanced with professional screenshot gallery in table format, prioritizing dark theme with collapsible light theme section |
+
+
+
+
+
+Commit messages (for context):
+feat: add comprehensive README screenshots with optimized layout
+
+## Summary
+- Add professional desktop and mobile screenshots showcasing the interface
+- Implement table-based layout for better visual comparison
+- Prioritize dark theme with collapsible light theme option
+
+## Changes
+- Create `docs/images/` directory with 8 screenshot variants
+- Add `frontend/scripts/capture-screenshots.ts` for automated screenshot capture
+- Update `README.md` with optimized table layout
+- Add `npm run capture-sc
+...
+ration of CLI → Web chat transformation
+- Simplified, focused content without redundancy
+- Better representation of core value proposition
+
+## Screenshot Updates
+- Re-captured all basic scenarios with new mobile viewport
+- Updated light theme to match main content (basic chat)
+- Consolidated advanced features to permission workflow only
+- Removed code generation screenshot (weak visual impact)
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

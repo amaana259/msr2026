@@ -1,0 +1,221 @@
+
+Context for PR #3165440543
+Primary language: TypeScript
+
+PR title:
+Fix agents page module resolution error and update slides presentation
+
+PR body:
+## Summary
+- Fixed critical module resolution error on /agents page that was causing complete page failure
+- Updated slides presentation with new images and reordering
+- Updated homepage Bitcoin for AI link and announcement time
+- Made Channels navbar link localhost-only
+
+## Bug Fix Details
+
+### Module Resolution Error (Fixes #1029)
+- Removed unused  import from  line 26
+- Browser cannot resolve npm module specifiers without bundling
+- This was causing: 
+
+### Slides Updates
+- Added new slides fo
+...
+ated styling and spacing
+- Fixed title positioning issues
+
+### Other Changes
+- Updated Bitcoin for AI link to https://bitcoinfor.ai/ with 5pm CT announcement time
+- Made Channels link only visible on localhost
+
+## Test Plan
+- [x] Built openagents.com successfully
+- [x] Verified agents page loads without console errors
+- [x] Tested slides presentation navigation
+- [x] All pre-push checks passed
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Diff summary:
+apps/openagents.com/src/routes/slides/index.ts
+@@ -79,10 +79,20 @@ export default function slides() {
+       }
+       
+       .slide-4 {
++        background: #000;
++      }
++      
++      .slide-4 img {
++        max-width: 60%;
++        max-height
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '4') {
++          } else if (e.key >= '1' && e.key <= '5') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/static/sdk.png
+
+apps/openagents.com/public/sdk.png
+
+apps/openagents.com/src/routes/slides/index.ts
+@@ -80,19 +80,43 @@ export default function slides() {
+       
+       .slide-4 {
+         background: #000;
++        display: flex;
++        flex-direction: column;
++        align-items: center;
++    
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '5') {
++          } else if (e.key >= '1' && e.key <= '6') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/public/commander.png
+
+apps/openagents.com/src/routes/slides/index.ts
+@@ -103,20 +103,30 @@ export default function slides() {
+       }
+       
+       .slide-5 {
++        background: #000;
++      }
++      
++      .slide-5 img {
++        max-width: 60%;
++        max-heig
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '6') {
++          } else if (e.key >= '1' && e.key <= '7') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/public/nipoa.png
+
+apps/openagents.com/src/routes/slides/index.ts
+@@ -18,7 +18,7 @@ export default function slides() {
+         cursor: pointer;
+         user-select: none;
+       }
+-      
++
+       .slides-container {
+         width: 100%;
+         height: 100%;
+@@
+...
+ouchEndX > touchStartX + 50) prevSlide();
+         }
+-        
++
+         // Fullscreen on F key
+         document.addEventListener('keydown', (e) => {
+           if (e.key === 'f' || e.key === 'F') {
+apps/openagents.com/public/174small.png
+
+apps/openagents.com/public/dont.png
+
+apps/openagents.com/public/ep174.png
+
+apps/openagents.com/public/ep178.png
+
+apps/openagents.com/src/components/shared-header.ts
+@@ -12,7 +12,9 @@ export function sharedHeader({ current }: HeaderOptions = {}) {
+         <a href="/" class="brand">OpenAgents</a>
+         <nav class="header-nav">
+           <!-- <a href="/chat" cl
+...
+        if (isLocalhost) {
++          if (adminLink) adminLink.style.display = 'inline-block';
++          if (channelsLink) channelsLink.style.display = 'inline-block';
+         }
+       })();
+       
+apps/openagents.com/src/routes/home.ts
+@@ -16,7 +16,7 @@ export async function home() {
+           <div class="launch-notice" box-="square">
+             <div class="notice-title">Welcome to OpenAgents</div>
+             <div class="notice
+...
+ 5pm CT.</p>
+               <p>In the meantime, explore our resources:</p>
+               <div class="notice-links">
+                 <a href="/blog" is-="button" variant-="foreground1" box-="square">
+apps/openagents.com/src/routes/slides/index.ts
+@@ -86,24 +86,32 @@ export default function slides() {
+         justify-content: center;
+       }
+ 
+-      .slide-4 img {
+-        max-width: 40%;
+-        max-height: 40%;
+-        object-fit: contai
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '8') {
++          } else if (e.key >= '1' && e.key <= '9') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/src/components/agent-chat.ts
+@@ -23,7 +23,6 @@ export function agentChat({ agentId: _agentId, channelId: initialChannelId }: Ag
+     <script type="module">
+       // Initialize Effect runtime when component mounts
+       import {
+...
+mport { Browser } from "@openagentsinc/sdk"
+       
+       const container = document.getElementById('agent-chat-container')
+       const initialChannelId = ${JSON.stringify(initialChannelId || null)}
+
+First failing CI snippet:
+
+
+Top review comments:
+
+
+Commit messages (for context):
+feat: Add SDK image as new slide after 2^n formula
+
+- Copy sdk.png from desktop to static directory
+- Insert SDK image as slide 4 (after the 2^n formula)
+- Move 'Join Us' to slide 5
+- Update navigation to support 5 slides
+- Apply consistent styling to new slide
+
+🤖 Generated with Claude Code
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+fix: Move sdk.png to public directory for proper serving
+
+The image needs to be in the public directory to be served correctly,
+not the static directory.
+
+🤖 Gen
+...
+e Join Us title smaller and more proportional
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+fix: Remove SDK import causing module resolution error on agents page (fixes #1029)
+
+- Removed unused @openagentsinc/sdk import from agent-chat.ts
+- Browser cannot resolve npm module specifiers without bundling
+- This was causing the agents page to completely fail to load
+
+🤖 Generated with Claude Code
+
+Co-Authored-By: Claude <noreply@anthropic.com>

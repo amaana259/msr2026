@@ -1,0 +1,120 @@
+
+Context for PR #3231949586
+Primary language: Java
+
+PR title:
+feat(swagger): Add Swagger annotations to Batch 1 - Core Authentication & User Management
+
+PR body:
+## Summary
+Progressive implementation of Swagger/OpenAPI annotations for REST endpoints - Batch 1
+
+This PR adds comprehensive Swagger annotations to **15 REST resource classes** focused on core authentication and user management APIs that most applications depend on.
+
+## 🔗 Foundation Dependency
+**⚠️ This PR depends on the infrastructure established in PR #32561**
+
+- **Foundation PR**: [#32561 - Progressive Swagger annotations infrastructure](https://github.com/dotCMS/core/pull/32561)
+- **Require
+...
+t**
+- **Next**: [#32657 - Batch 2 (Content Management Core)](https://github.com/dotCMS/core/pull/32657)
+- **Complete chain**: See PR #32561 for full rollout plan
+
+## ⚠️ Merge Requirements
+1. **Foundation PR #32561 must be merged first**
+2. This PR can then be reviewed and merged
+3. After this PR is merged, remove draft state from Batch 2 PR #32657
+4. Continue sequential rollout through Batch 8
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Diff summary:
+dotCMS/src/main/java/com/dotcms/auth/providers/saml/v1/DotSamlResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/RoleResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/UserResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/annotation/ConsumesRequestBodyDirectly.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/ApiTokenResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/AuthenticationHelper.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/AuthenticationResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/CreateJsonWebTokenResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/ForgotPasswordResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/LoginFormResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/LogoutResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/authentication/ResetPasswordResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/container/ContainerResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/contenttype/ContentTypeResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/personalization/PersonalizationResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/personas/PersonaResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/system/permission/PermissionResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/system/role/RoleResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/template/TemplateResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/user/UserResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/versionable/VersionableResource.java
+
+dotCMS/src/main/java/com/dotcms/rest/api/v1/vtl/VTLResource.java
+
+dotCMS/src/main/webapp/WEB-INF/openapi/openapi.yaml
+
+dotCMS/src/test/java/com/dotcms/rest/RestEndpointAnnotationComplianceTest.java
+
+dotCMS/src/test/java/com/dotcms/rest/RestEndpointAnnotationValidationTest.java
+
+
+First failing CI snippet:
+
+
+Top review comments:
+<details open>
+<summary><h3>Bug: Generic Type Mismatch in Error View Classes</h3></summary>
+
+`ResponseEntityEventErrorView` and `ResponseEntityFilterErrorView` classes have a type parameter mismatch. Both extend `ResponseEntityView<String>` but their constructors are initialized with `List<ErrorEntity>`, which is incompatible with the declared generic type.
+
+<p></p>
+
+<details>
+<summary><code>dotCMS/src/main/java/com/dotcms/rest/api/v1/event/ResponseEntityEventErrorView.java#L12-L17</code></summary>
+
+https://github.com/dotCMS/core/blob/23507a1d9754fbb12c216240b6c5a220def570e8/dotCMS/src/main/java/com/dotcms/rest/api/v1/event/ResponseEntityEventErrorView.java#L12-L17
+
+</details>
+
+<details>
+<summary><code>dotCMS/src/main/java/com/dotcms/rest/api/v1/pushpublish/ResponseEntityFilterErrorView.java#L12-L17</code></summary>
+
+https://github.com/dotCMS/core/blob/23507a1d9754fbb12c216240b6c5a220def570e8/dotCMS/src/main/java/com/dotcms/rest/api/v1/pushpublish/ResponseEntityFilterErrorView.java#L12
+...
+TU1OTAtNDYzNy04YzlmLWRkODI3YjExZTlmYyIsImVuY3J5cHRpb25LZXkiOiI2LVU2cFhTX0xXeGh0anNtcDNyQU55dk1UZE9BelJFdTVUQ1M1YVpZNkZZIiwiYnJhbmNoIjoiaXNzdWUtMzI1MjktYmF0Y2gtMSIsInJlcG9Pd25lciI6ImRvdENNUyIsInJlcG9OYW1lIjoiY29yZSIsInByTnVtYmVyIjozMjY1NiwiY29tbWl0U2hhIjoiMTNlZDNkZDk4MzMyZDFkNzI2MWZjZTU3MTE5NmMyNDU3ZDI2YzU0MSJ9LCJpYXQiOjE3NTQyOTg2MTEsImV4cCI6MTc1NDkwMzQxMX0.ibuVPiovBAgrMJb6SXuVWQ6-ZVPNstStjZGiKh4YSQWw8n8MQx-lvAb80PRvRs-lV4NmHEIYCKZEoBgWl81SUem9Kt-qAA1KzUw9-w9U7DXgCuesOX31xu1ObjFlWIsmdwgrHqYBGYt9jEK8MW1DNLGBMOr-Z3iWTDH5rByr3nyrGzVbQ-91JRuhq9tFcU_0zSKpH1286I2bxsx3Ch5KBjJWoKo2GA5pUSPv9oZjkJ9Pzm6gsMDQttoZlMtMP7B06rX-T0CysfJMsuRh2GPA_BRbbpLEk6sYSCD2bpk9E0NlE_bST28K3NI6lOzpKXqMffaABVSpO2uBjmqO81z2gA">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://cursor.com/fix-in-web-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://cursor.com/fix-in-web-light.svg">
+    <img alt="Fix in Web" src="https://cursor.com/fix-in-web.svg">
+  </picture>
+</a>
+
+
+
+Commit messages (for context):
+Batch 1 resources

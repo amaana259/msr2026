@@ -1,0 +1,209 @@
+
+Context for PR #3165431934
+Primary language: TypeScript
+
+PR title:
+feat: Update slides presentation with new content and improvements
+
+PR body:
+## Summary
+
+This PR updates the slides presentation with new content and improves the overall user experience.
+
+## Changes
+
+### New Slides Added
+- **OpenAgents Compute**: Added new slide featuring the 174small.png image
+- **"dont" image**: Added as slide 10, positioned just before the Join Us slide
+
+### Slide Reordering
+The slides have been reordered for better flow:
+1. Open Agents Win
+2. OpenAgents logo
+3. Reed's Law of Group-Forming Networks
+4. **OpenAgents Compute** (moved up)
+5. **Commander*
+...
+y: 174small.png, dont.png, ep174.png, ep178.png
+
+## Testing
+- Verified all slides display correctly
+- Confirmed navigation between slides works properly
+- Tested on different viewport sizes
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+## Additional Fix
+- Fixed module resolution error on agents page by removing unused SDK import from agent-chat.ts
+- This was causing complete page failure with browser module resolution error
+- Fixes #1029
+
+Diff summary:
+apps/openagents.com/src/routes/slides/index.ts
+@@ -79,10 +79,20 @@ export default function slides() {
+       }
+       
+       .slide-4 {
++        background: #000;
++      }
++      
++      .slide-4 img {
++        max-width: 60%;
++        max-height
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '4') {
++          } else if (e.key >= '1' && e.key <= '5') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/static/sdk.png
+
+apps/openagents.com/public/sdk.png
+
+apps/openagents.com/src/routes/slides/index.ts
+@@ -80,19 +80,43 @@ export default function slides() {
+       
+       .slide-4 {
+         background: #000;
++        display: flex;
++        flex-direction: column;
++        align-items: center;
++    
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '5') {
++          } else if (e.key >= '1' && e.key <= '6') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/public/commander.png
+
+apps/openagents.com/src/routes/slides/index.ts
+@@ -103,20 +103,30 @@ export default function slides() {
+       }
+       
+       .slide-5 {
++        background: #000;
++      }
++      
++      .slide-5 img {
++        max-width: 60%;
++        max-heig
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '6') {
++          } else if (e.key >= '1' && e.key <= '7') {
+             goToSlide(e.key);
+           }
+         });
+apps/openagents.com/public/nipoa.png
+
+apps/openagents.com/src/routes/slides/index.ts
+@@ -18,7 +18,7 @@ export default function slides() {
+         cursor: pointer;
+         user-select: none;
+       }
+-      
++
+       .slides-container {
+         width: 100%;
+         height: 100%;
+@@
+...
+ouchEndX > touchStartX + 50) prevSlide();
+         }
+-        
++
+         // Fullscreen on F key
+         document.addEventListener('keydown', (e) => {
+           if (e.key === 'f' || e.key === 'F') {
+apps/openagents.com/public/174small.png
+
+apps/openagents.com/public/dont.png
+
+apps/openagents.com/public/ep174.png
+
+apps/openagents.com/public/ep178.png
+
+apps/openagents.com/src/components/shared-header.ts
+@@ -12,7 +12,9 @@ export function sharedHeader({ current }: HeaderOptions = {}) {
+         <a href="/" class="brand">OpenAgents</a>
+         <nav class="header-nav">
+           <!-- <a href="/chat" cl
+...
+        if (isLocalhost) {
++          if (adminLink) adminLink.style.display = 'inline-block';
++          if (channelsLink) channelsLink.style.display = 'inline-block';
+         }
+       })();
+       
+apps/openagents.com/src/routes/home.ts
+@@ -16,7 +16,7 @@ export async function home() {
+           <div class="launch-notice" box-="square">
+             <div class="notice-title">Welcome to OpenAgents</div>
+             <div class="notice
+...
+ 5pm CT.</p>
+               <p>In the meantime, explore our resources:</p>
+               <div class="notice-links">
+                 <a href="/blog" is-="button" variant-="foreground1" box-="square">
+apps/openagents.com/src/routes/slides/index.ts
+@@ -86,24 +86,32 @@ export default function slides() {
+         justify-content: center;
+       }
+ 
+-      .slide-4 img {
+-        max-width: 40%;
+-        max-height: 40%;
+-        object-fit: contai
+...
+efault();
+             prevSlide();
+-          } else if (e.key >= '1' && e.key <= '8') {
++          } else if (e.key >= '1' && e.key <= '9') {
+             goToSlide(e.key);
+           }
+         });
+
+First failing CI snippet:
+
+
+Top review comments:
+
+
+Commit messages (for context):
+feat: Add SDK image as new slide after 2^n formula
+
+- Copy sdk.png from desktop to static directory
+- Insert SDK image as slide 4 (after the 2^n formula)
+- Move 'Join Us' to slide 5
+- Update navigation to support 5 slides
+- Apply consistent styling to new slide
+
+🤖 Generated with Claude Code
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+fix: Move sdk.png to public directory for proper serving
+
+The image needs to be in the public directory to be served correctly,
+not the static directory.
+
+🤖 Gen
+...
+slide positioned before Join Us
+- Updated slide order: Compute, Commander, SDK, Psionic, openagents.com, NIP
+- Made Reed's Law title text larger for better visibility
+- Updated Bitcoin for AI link and added 5pm CT announcement time
+- Made Channels navbar link localhost-only (like Admin)
+- Fixed Psionic slide formatting with smaller bullet text
+- Made Join Us title smaller and more proportional
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

@@ -1,0 +1,107 @@
+
+Context for PR #3232028428
+Primary language: C++
+
+PR title:
+Win-build-improvements
+
+PR body:
+Hey Alariq, 
+
+We haven't discussed using AI-assisted coding so I'm not sure if you're cool with me submitting changes that I've worked on with claude's help. If not just reject this PR and let me know in the comment.
+
+I'm opening this PR to implement additional documentation & automation in getting this set up for windows contributors. With this someone is able to immediately get up and running by running the 2 batch files that extract the 3rdparty.zip and configure cmakelists properly. 
+
+The result is 2 clicks and anyone is able to immediately work on and contribute from windows.
+
+More details:
+
+- Clarify that 3rdparty/ is temporary and extracted from 3rdparty.zip
+- Update build steps to show extraction process
+- Add note about not committing 3rdparty folder to git
+- Ensure clean repository state while maintaining build convenience
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Cheers!
+
+Diff summary:
+code/mainmenu.cpp
+
+code/mainmenu.cpp
+
+code/mainmenu.cpp
+
+.gitignore
+
+CLAUDE.md
+
+build_windows.bat
+
+setup_build_environment.bat
+
+CLAUDE.md
+
+
+First failing CI snippet:
+
+
+Top review comments:
+## Pull Request Overview
+
+This PR adds automation and documentation to streamline setting up and building the project on Windows.
+
+- Introduces `setup_build_environment.bat` to extract dependencies and validate the environment.
+- Adds `build_windows.bat` to configure and build the main application and resource DLL.
+- Provides `CLAUDE.md` with step-by-step Windows build instructions.
+- Cleans up formatting in `code/mainmenu.cpp`.
+
+### Reviewed Changes
+
+Copilot reviewed 4 out of 5 changed files in this pull request and generated 4 comments.
+
+| File                          | Description                                                        |
+|-------------------------------|--------------------------------------------------------------------|
+| setup_build_environment.bat   | New script to extract `3rdparty.zip`, verify folder structure, and check for required tools |
+| build_windows.bat             | New script to configure and build the project and resources on Windows |
+| CLAUDE.md                     | Detailed Windows build documentation and repository overview       |
+| code/mainmenu.cpp             | Formatting cleanup—blank-line removals and struct brace style      |
+
+
+<details>
+<summary>Comments suppressed due to low confidence (1)</summary>
+
+**CLAUDE.md:29**
+* [nitpick] These commands are Windows PowerShell or batch commands; consider using a more appropriate code fence label like `powershell` or `bat` to match the script syntax.
+```
+```bash
+```
+</details>
+
+
+
+Commit messages (for context):
+feat(ui): add resolution-aware scaling to main menu layout
+
+Implemented dynamic scaling logic in MainMenu::render() to make the main menu UI adapt to various screen resolutions. 
+Scaling factors are now calculated based on a 1024x768 baseline, with optional caps for layout and font scaling. 
+This improves usability at 1080p, 1440p, and 4K without breaking existing layout behavior.
+Fix main menu copyright text scaling and alignment
+
+- Manually center and scale copyright text based on resoluti
+...
+ted with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+docs: Update CLAUDE.md with proper 3rdparty folder handling
+
+- Clarify that 3rdparty/ is temporary and extracted from 3rdparty.zip
+- Update build steps to show extraction process
+- Add note about not committing 3rdparty folder to git
+- Ensure clean repository state while maintaining build convenience
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

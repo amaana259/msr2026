@@ -1,0 +1,221 @@
+
+Context for PR #3165023078
+Primary language: TypeScript
+
+PR title:
+Convert to typescript
+
+PR body:
+All JavaScript source files have been successfully converted to TypeScript:
+- Remove src/TinyMDE.js -> now src/TinyMDE.ts
+- Remove src/TinyMDECommandBar.js -> now src/TinyMDECommandBar.ts
+- Remove src/grammar.js -> now src/grammar.ts
+- Remove src/index.js -> now src/index.ts
+- Remove src/tiny.js -> now src/tiny.ts
+- Remove src/svg/svg.js -> now src/svg/svg.ts
+
+Build and all 148 tests continue to pass with TypeScript-only codebase.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Diff summary:
+CLAUDE.md
+@@ -0,0 +1,64 @@
++# CLAUDE.md
++
++This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
++
++## Development Commands
++
++- `npm run dev` - Start developmen
+...
+line formatting
++- Textarea replacement capability
++- Drag & drop support for images
++- Undo/redo functionality
++- Event system for `change`, `selection`, and `drop` events
+\ No newline at end of file
+.eslintrc.json
+@@ -10,6 +10,7 @@
+     },
+     "ignorePatterns": ["gulpfile.js", "jest*.config.js", "jest/**/*.js", "node_modules/"],
+     "rules": {
+-        "no-fallthrough": "off"
++        "no-fallthrough": "off",
++        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+     }
+ }
+gulpfile.mjs
+@@ -10,9 +10,11 @@ import { babel as rollupBabel } from "@rollup/plugin-babel";
+ import commonjs from "@rollup/plugin-commonjs";
+ import { eslint } from "rollup-plugin-eslint";
+ import { nodeResolve }
+...
+ult svg;`,
++      path.join(".", "src", "svg", "svg.ts"),
++      `const svg: Record<string, string> = {\n  ${values.join(",\n  ")}\n};\n\nexport default svg;`,
+       { encoding: "utf8" }
+     )
+   );
+package-lock.json
+@@ -15,11 +15,16 @@
+         "@babel/core": "^7.27.4",
+         "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+         "@babel/preset-env": "^7.27.2",
++        "@babel/preset-typescript": "^7
+...
+ "^3.0.0"
++      }
++    },
+     "node_modules/universal-user-agent": {
+       "version": "7.0.3",
+       "resolved": "https://registry.npmjs.org/universal-user-agent/-/universal-user-agent-7.0.3.tgz",
+package.json
+@@ -6,9 +6,9 @@
+   "files": [
+     "dist/*",
+     "lib/*",
+-    "globals.d.ts"
++    "lib/**/*.d.ts"
+   ],
+-  "types": "globals.d.ts",
++  "types": "lib/index.d.ts",
+   "keywords": [
+     "embeddable",
+
+...
+^4.41.1",
+     "rollup-plugin-eslint": "^7.0.0",
+     "terser": "^5.40.0",
++    "tslib": "^2.8.1",
++    "typescript": "^5.7.3",
+     "vinyl-buffer": "^1.0.1",
+     "vinyl-source-stream": "^2.0.0"
+   }
+src/TinyMDE.ts
+@@ -0,0 +1,1670 @@
++import {
++  inlineGrammar,
++  lineGrammar,
++  punctuationLeading,
++  punctuationTrailing,
++  htmlescape,
++  htmlBlockGrammar,
++  commands,
++  HTMLBlockRule,
++  Command,
++} from "./
+...
+tener({
++          focus: focus!,
++          anchor: anchor!,
++          commandState: this.lastCommandState,
++        });
++      }
++    }
++  }
++}
++
++export default Editor;
+\ No newline at end of file
+src/TinyMDECommandBar.ts
+@@ -0,0 +1,370 @@
++import svg from "./svg/svg";
++import { Editor, Position, SelectionEvent } from "./TinyMDE";
++
++const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(
++  typeof navigator !== "undefined" 
+...
+event as any)[modifier]) continue outer;
++        }
++        this.handleClick(hotkey.command, event);
++        return;
++      }
++    }
++  }
++}
++
++export default CommandBar;
+\ No newline at end of file
+src/grammar.ts
+@@ -0,0 +1,330 @@
++export interface GrammarRule {
++  regexp: RegExp;
++  replacement: string;
++  labelPlaceholder?: number;
++}
++
++export interface HTMLBlockRule {
++  start: RegExp;
++  end: RegExp | fal
+...
+
++    set: {pattern: /^( {0,3}(?:(?:#+|[0-9]{1,9}[).]|[>\-*+])\s+)?)(.*)$/, replacement: '> $2'}, 
++    unset: {pattern: /^( {0,3}>[ ]?)(.*)$/, replacement: '$2'}
++  },
++};
+\ No newline at end of file
+src/index.ts
+@@ -0,0 +1,4 @@
++import CommandBar from "./TinyMDECommandBar";
++import Editor from "./TinyMDE";
++
++export { Editor, CommandBar };
+\ No newline at end of file
+src/svg/svg.ts
+@@ -0,0 +1,20 @@
++const svg: Record<string, string> = {
++  blockquote: `<svg height="18" width="18"><rect width="5" height="5" x="3" y="4" ry="1"/><rect ry="1" y="4" x="10" height="5" width="5"/><path
+...
+2929688 C 13.783174 3.369112 12.691643 2.9041408 11.572266 2.7578125 C 11.292421 2.7212304 11.011584 2.704051 10.730469 2.7050781 z " /></svg>
++`
++};
++
++export default svg;
+\ No newline at end of file
+src/tiny.ts
+@@ -0,0 +1,3 @@
++import Editor from "./TinyMDE";
++
++export { Editor };
+\ No newline at end of file
+tsconfig.json
+@@ -0,0 +1,25 @@
++{
++  "compilerOption
+
+First failing CI snippet:
+
+
+Top review comments:
+
+
+Commit messages (for context):
+Add CLAUDE.md documentation for Claude Code
+
+Provides comprehensive guidance for future Claude Code instances including development commands, architecture overview, build system details, and testing setup.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+Convert JavaScript source files to TypeScript
+
+- Convert all .js source files to .ts with full type safety
+- Add comprehensive TypeScript interfaces and type definitions
+- Update build syste
+...
+successfully converted to TypeScript:
+- Remove src/TinyMDE.js -> now src/TinyMDE.ts
+- Remove src/TinyMDECommandBar.js -> now src/TinyMDECommandBar.ts
+- Remove src/grammar.js -> now src/grammar.ts
+- Remove src/index.js -> now src/index.ts
+- Remove src/tiny.js -> now src/tiny.ts
+- Remove src/svg/svg.js -> now src/svg/svg.ts
+
+Build and all 148 tests continue to pass with TypeScript-only codebase.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

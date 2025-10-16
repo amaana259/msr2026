@@ -1,0 +1,32 @@
+
+Context for PR #3216678691
+Primary language: Swift
+
+PR title:
+IOS-4845 Update CLAUDE.md to prevent AI signatures in commits
+
+PR body:
+## Summary
+- Added critical rules section at the top of CLAUDE.md to prevent AI signatures
+- Added pre-commit checklist with explicit verification steps
+- Added examples showing forbidden vs correct commit practices
+
+## Changes
+- Critical rules now appear immediately after Quick Start heading
+- Pre-commit checklist added before Git & GitHub section
+- Explicit examples with ❌ and ✅ markers showing what NOT to do
+
+This ensures AI assistants cannot miss or ignore the restriction against adding signatures like "Co-Authored-By: Claude" to commits.
+
+Diff summary:
+CLAUDE.md
+
+
+First failing CI snippet:
+
+
+Top review comments:
+
+
+Commit messages (for context):
+IOS-4845 Update CLAUDE.md to prevent AI signatures in commits

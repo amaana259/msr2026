@@ -1,0 +1,112 @@
+
+Context for PR #3215730319
+Primary language: Python
+
+PR title:
+Fix logdet returning finite values for singular matrices on CUDA 
+
+PR body:
+Fixes https://github.com/pytorch/pytorch/issues/154312
+
+Fix logdet returning finite values for singular matrices on CUDA (https://github.com/pytorch/pytorch/issues/154312
+https://github.com/pytorch/pytorch/issues/154312)
+
+PyTorch's logdet function returns mathematically incorrect finite values for
+singular matrices on CUDA devices instead of the expected -inf. This occurs
+because cuSOLVER and LAPACK produce tiny non-zero diagonal elements (~1e-16)
+instead of exact zeros for singular matr
+...
+mproved performance
+- ✅ Comprehensive edge case testing added
+
+**Verification:**
+Before: torch.linalg.slogdet(singular_matrix) → finite values (incorrect)
+After:  torch.linalg.slogdet(singular_matrix) → (sign=0, logabsdet=-inf) ✅
+
+The implementation uses pure tensor operations to eliminate GPU sync points while
+maintaining robust singularity detection through a two-tier approach.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+
+Diff summary:
+aten/src/ATen/native/LinearAlgebra.cpp
+
+test/test_linalg.py
+
+aten/src/ATen/native/LinearAlgebra.cpp
+
+aten/src/ATen/native/LinearAlgebra.cpp
+
+test/test_linalg.py
+
+test/distributions/test_distributions.py
+
+
+First failing CI snippet:
+
+
+Top review comments:
+## Pull Request Overview
+
+This PR adds robust singularity detection to `torch.linalg.slogdet` for CUDA, ensuring singular matrices return `-inf` instead of tiny finite values, and includes a corresponding test case.
+
+- Implements NumPy-style two-tier singularity detection (LAPACK info + threshold check)
+- Adds a test for the numerically singular matrix from issue #154312
+- Measures and reports performance overhead on CPU and CUDA
+
+### Reviewed Changes
+
+Copilot reviewed 2 out of 2 changed files in this pull request and generated 1 comment.
+
+| File                                 | Description                                                         |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| test/test_linalg.py                  | Added a `test_single_det` case for the issue #154312 matrix         |
+| aten/src/ATen/native/LinearAlgebra.cpp | Integrated two-tier singularity detection and conditional logic   |
+
+
+<details
+...
+perators_e_k - test_root_decomposition_cholesky (pytorch.linear_operator.test.operators.test_kernel_linear_operator.TestKernelLinearOperatorLinOpReturn)'
+```
+
+```
+buck test '@fbcode//mode/opt' fbcode//pytorch/linear_operator:test_other -- --exact 'pytorch/linear_operator:test_other - test_inv_quad_logdet_many_vectors (pytorch.linear_operator.test.functions.test_inv_quad_logdet.TestInvQuadLogDetBatch)'
+```
+
+```
+buck test '@fbcode//mode/opt' fbcode//pytorch/linear_operator:test_other -- --exact 'pytorch/linear_operator:test_other - test_inv_quad_logdet_many_vectors (pytorch.linear_operator.test.functions.test_inv_quad_logdet.TestInvQuadLogDetMultiBatch)'
+```
+---
+@pytorchbot successfully started a revert job. Check the current status [here](https://github.com/pytorch/pytorch/actions/runs/16232143056).
+Questions? Feedback? Please reach out to the [PyTorch DevX Team](https://github.com/pytorch/pytorch/wiki/Dev-Infra-Office-Hours)
+---
+@soumith your PR has been successfully reverted.
+
+Commit messages (for context):
+Fix logdet returning finite values for singular matrices on CUDA (#154312)
+
+PyTorch's logdet function returns mathematically incorrect finite values for
+singular matrices on CUDA devices instead of the expected -inf. This occurs
+because cuSOLVER and LAPACK produce tiny non-zero diagonal elements (~1e-16)
+instead of exact zeros for singular matrices.
+
+**Problem:**
+Issue #154312 matrix returns finite values instead of -inf for singular matrices.
+
+**Solution:**
+Implemented NumPy-style two-tier sing
+...
+e test's main purpose is to verify correctness for regular samples
+- Both PyTorch and scipy should agree on which samples are singular
+
+Fix finite mask to check all distributions in Wishart test
+
+The finite mask should check that all three Wishart distributions
+(created with covariance, precision_matrix, and scale_tril parameters)
+and the scipy reference all have finite values before comparing.
+
+This ensures we only compare samples where all implementations agree
+on the finiteness of the result.

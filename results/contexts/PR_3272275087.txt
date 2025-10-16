@@ -1,0 +1,158 @@
+
+Context for PR #3272275087
+Primary language: JavaScript
+
+PR title:
+feat: Add tag support for API Keys and fix OAuth token exchange
+
+PR body:
+## Summary
+- 🏷️ Add comprehensive tag support for API Keys to improve organization and management
+- 🔧 Fix OAuth token exchange request format to comply with OAuth 2.0 specification
+- 🎨 Enhance web UI with intuitive tag management features
+
+## Features Added
+
+### API Key Tag System
+- **Tag Creation**: Add multiple tags to API keys during creation
+- **Tag Editing**: Modify tags on existing API keys
+- **Tag Filtering**: Filter API keys by tags in the dashboard
+- **Visual Display**: Tags shown as co
+...
+olumn widths for better readability
+
+## Testing
+- ✅ Tested tag creation and editing functionality
+- ✅ Verified tag filtering works correctly
+- ✅ Confirmed OAuth token exchange works with new format
+- ✅ Validated tag persistence in Redis
+
+## Screenshots
+<details>
+<summary>Tag Management UI</summary>
+
+- Tag display in API key list
+- Tag input during key creation
+- Tag filter dropdown
+
+</details>
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Diff summary:
+src/routes/admin.js
+@@ -320,7 +320,8 @@ router.post('/api-keys', authenticateAdmin, async (req, res) => {
+       restrictedModels,
+       enableClientRestriction,
+       allowedClients,
+-      dailyCostLimit
++      daily
+...
+tags must be non-empty strings' });
++      }
++      updates.tags = tags;
++    }
++
+     await apiKeyService.updateApiKey(keyId, updates);
+     
+     logger.success(`📝 Admin updated API key: ${keyId}`);
+src/services/apiKeyService.js
+@@ -27,7 +27,8 @@ class ApiKeyService {
+       restrictedModels = [],
+       enableClientRestriction = false,
+       allowedClients = [],
+-      dailyCostLimit = 0
++      dailyCostLimit = 0,
++      ta
+...
+=== 'tags') {
+             // 特殊处理数组字段
+             updatedData[field] = JSON.stringify(value || []);
+           } else if (field === 'enableModelRestriction' || field === 'enableClientRestriction') {
+src/utils/oauthHelper.js
+@@ -145,9 +145,12 @@ async function exchangeCodeForTokens(authorizationCode, codeVerifier, state, pro
+             proxyType: proxyConfig?.type || 'none'
+         });
+ 
+-        const response = await
+...
+m-urlencoded',
+                 'User-Agent': 'claude-cli/1.0.56 (external, cli)',
+                 'Accept': 'application/json, text/plain, */*',
+                 'Accept-Language': 'en-US,en;q=0.9',
+web/admin/app.js
+@@ -136,7 +136,8 @@ const app = createApp({
+                 expireDuration: '', // 过期时长选择
+                 customExpireDate: '', // 自定义过期日期
+                 expiresAt: null, // 实际的过期时间戳
+-            
+...
+it.toString().trim() !== '' ? parseFloat(this.editApiKeyForm.dailyCostLimit) : 0,
++                        tags: this.editApiKeyForm.tags
+                     })
+                 });
+                 
+web/admin/index.html
+@@ -444,8 +444,10 @@ <h3 class="text-xl font-bold text-gray-900">模型使用分布与Token使用趋
+                             <!-- 饼图 -->
+                             <div class="card p-6">
+                          
+...
+="text-xs text-gray-500 mt-2">在时间窗口内允许消耗的最大 Token 数量，0 或留空表示无限制</p>
++                            </div>
+                         </div>
+                         
+                         <!-- 示例说明 -->
+web/admin/style.css
+@@ -257,12 +257,49 @@ body::before {
+ .table-container {
+     background: rgba(255, 255, 255, 0.95);
+     border-radius: 16px;
+-    overflow: hidden;
++    overflow-x: auto;
++    overflow-y: visible;
+ 
+...
+    justify-content: center;
++    }
++    
++    .model-distribution-container.single-item,
++    .model-distribution-container.two-items {
++        max-width: 100%;
++    }
+ }
+\ No newline at end of file
+
+First failing CI snippet:
+
+
+Top review comments:
+https://github.com/Wei-Shaw/claude-relay-service/commit/03a5300b78c45bbc4bee7323584aa28c9c89ecdb
+
+Commit messages (for context):
+feat: Add tag support for API Keys and fix OAuth token exchange
+
+## Features
+- Add tag functionality to API keys for better organization
+  - Support creating, editing, and filtering by tags in web interface
+  - Add tag display in API key list with visual indicators
+  - Store tags as JSON array in Redis
+
+## Fixes
+- Fix OAuth token exchange request format
+  - Change from JSON to URL-encoded format per OAuth 2.0 spec
+  - Ensure proper Content-Type header (application/x-www-form-urlencoded)
+
+## Changes
+- Update admin routes to handle tag operations
+- Enhance apiKeyService with tag validation and storage
+- Redesign web UI for better tag management experience
+  - Add tag input with keyboard support
+  - Implement tag filtering dropdown
+  - Optimize table layout for tag display
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>

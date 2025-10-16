@@ -1,0 +1,61 @@
+
+Context for PR #3165441855
+Primary language: TypeScript
+
+PR title:
+fix: Remove SDK import causing module resolution error on agents page
+
+PR body:
+## Summary
+Fixes critical module resolution error on /agents page that was causing complete page failure.
+
+## Bug Details (Fixes #1029)
+- Removed unused `@openagentsinc/sdk` import from `agent-chat.ts` line 26
+- Browser cannot resolve npm module specifiers without bundling
+- This was causing: `Uncaught TypeError: Failed to resolve module specifier "@openagentsinc/sdk"`
+
+## Impact
+- The agents page was completely broken
+- Users saw blank page with console errors
+- Agent chat functionality didn't work
+
+## Solution
+Removed the unused SDK import since it wasn't being used in the component.
+
+## Test Plan
+- [x] Verified agent-chat.ts no longer imports SDK
+- [x] Built openagents.com successfully
+- [ ] Manually test /agents page loads without console errors
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Diff summary:
+apps/openagents.com/src/components/agent-chat.ts
+@@ -23,7 +23,6 @@ export function agentChat({ agentId: _agentId, channelId: initialChannelId }: Ag
+     <script type="module">
+       // Initialize Effect runtime when component mounts
+       import {
+...
+mport { Browser } from "@openagentsinc/sdk"
+       
+       const container = document.getElementById('agent-chat-container')
+       const initialChannelId = ${JSON.stringify(initialChannelId || null)}
+
+First failing CI snippet:
+
+
+Top review comments:
+
+
+Commit messages (for context):
+fix: Remove SDK import causing module resolution error on agents page (fixes #1029)
+
+- Removed unused @openagentsinc/sdk import from agent-chat.ts
+- Browser cannot resolve npm module specifiers without bundling
+- This was causing the agents page to completely fail to load
+
+🤖 Generated with Claude Code
+
+Co-Authored-By: Claude <noreply@anthropic.com>

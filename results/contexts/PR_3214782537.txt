@@ -1,0 +1,251 @@
+
+Context for PR #3214782537
+Primary language: Ruby
+
+PR title:
+Major Architecture Refactor - Configuration System Overhaul with RSFC Integration
+
+PR body:
+### **User description**
+Resolves #1529 
+
+## Summary
+
+This is a comprehensive architectural refactor spanning **43 days** (June 2 - July 15, 2025) that fundamentally transforms OneTime Secret's configuration architecture and introduces a modern template system. The work represents a complete overhaul of how the application manages configuration, initializes services, and renders templates.
+
+**Development Period**: June 2, 2025 - July 15, 2025 (43 days)  
+**Scope**: 750+ commits, ~488 fil
+...
+a href="https://github.com/onetimesecret/onetimesecret/pull/1538/files#diff-2f328e4cd8dbe3ad193e49d92bcf045f47a6b72b1e9487d366f6b8288589b4ca"></a></td>
+
+</tr>
+</table></details></td></tr></tr></tbody></table>
+
+___
+
+> <details> <summary>  Need help?</summary><li>Type <code>/help how to ...</code> in the comments thread for any questions about Qodo Merge usage.</li><li>Check out the <a href="https://qodo-merge-docs.qodo.ai/usage-guide/">documentation</a> for more information.</li></details>
+
+Diff summary:
+docs/DEVELOPMENT.md
+@@ -51,6 +51,27 @@ export default defineConfig({
+ 
+ > **Security Warning:** Never set `server.hmr.host` to a public IP or expose the Vite dev server to the internet, as this can create security vulner
+...
+tatus    # Check if server is running
++pnpm run redis:clean     # Clean Redis data
++```
++
+ ## Setting up Pre-commit Hooks
+ 
+ We use the `pre-commit` framework to maintain code quality and consistency.
+docs/MANUAL_INSTALL.md
+@@ -6,7 +6,7 @@ This guide covers installing OnetimeSecret manually, whether you're working with
+ 
+ Required components:
+ - [Redis Server](https://redis.io/download) (version 5 or higher)
+-- [Ruby](ht
+...
+her, ideally 3.4)
+ - [Bundler](https://bundler.io/) (version 2.5.x)
+ - [Node.js](https://nodejs.org/en/download/) (version 20 or higher)
+ - [pnpm](https://pnpm.io/installation) (version 9.2 or higher)
+package.json
+@@ -31,11 +31,11 @@
+     "podman:run": "podman run --rm -it onetimesecret",
+     "preview": "vite preview",
+     "preview:local": "vite preview --config vite.config.local.ts",
+-    "redis:start": "red
+...
+xec rubocop --config .rubocop.yml --fail-level warning",
+     "rubocop:version": "bundle exec rubocop --config .rubocop.yml --verbose_version",
+     "rubocop:version:pnpm": "pnpm run rubocop:version",
+docs/DEVELOPMENT.md
+@@ -51,6 +51,27 @@ export default defineConfig({
+ 
+ > **Security Warning:** Never set `server.hmr.host` to a public IP or expose the Vite dev server to the internet, as this can create security vulner
+...
+tatus    # Check if server is running
++pnpm run redis:clean     # Clean Redis data
++```
++
+ ## Setting up Pre-commit Hooks
+ 
+ We use the `pre-commit` framework to maintain code quality and consistency.
+docs/MANUAL_INSTALL.md
+@@ -6,7 +6,7 @@ This guide covers installing OnetimeSecret manually, whether you're working with
+ 
+ Required components:
+ - [Redis Server](https://redis.io/download) (version 5 or higher)
+-- [Ruby](ht
+...
+her, ideally 3.4)
+ - [Bundler](https://bundler.io/) (version 2.5.x)
+ - [Node.js](https://nodejs.org/en/download/) (version 20 or higher)
+ - [pnpm](https://pnpm.io/installation) (version 9.2 or higher)
+package.json
+@@ -31,11 +31,11 @@
+     "podman:run": "podman run --rm -it onetimesecret",
+     "preview": "vite preview",
+     "preview:local": "vite preview --config vite.config.local.ts",
+-    "redis:start": "red
+...
+xec rubocop --config .rubocop.yml --fail-level warning",
+     "rubocop:version": "bundle exec rubocop --config .rubocop.yml --verbose_version",
+     "rubocop:version:pnpm": "pnpm run rubocop:version",
+Gemfile
+@@ -11,7 +11,7 @@
+ #
+ # We support versions of Ruby that are still in normal maintenance.
+ #
+-ruby '>= 3.1.5'
++ruby '>= 3.4'
+ 
+ source 'https://rubygems.org/'
+ 
+Gemfile.lock
+@@ -317,7 +317,7 @@ DEPENDENCIES
+   xdg
+ 
+ RUBY VERSION
+-   ruby 3.3.5p100
++   ruby 3.4.4p34
+ 
+ BUNDLED WITH
+    2.6.6
+docs/MANUAL_INSTALL.md
+@@ -19,11 +19,11 @@ Required components:
+ First, verify if you have the required dependencies:
+ 
+ ```bash
+-ruby --version       # Should be 3.1+
+-bundler --version    # Should be 2.5.x
+-node --version
+...
+ted.
++> [!INFO]
++> If you see audit-related errors when installing pnpm with sudo, this is normal in containers or minimal systems where audit capabilities are limited.
+ 
+ ### 2. Get the Source Code
+ 
+Gemfile
+@@ -11,7 +11,7 @@
+ #
+ # We support versions of Ruby that are still in normal maintenance.
+ #
+-ruby '>= 3.1.5'
++ruby '>= 3.4'
+ 
+ source 'https://rubygems.org/'
+ 
+Gemfile.lock
+@@ -317,7 +317,7 @@ DEPENDENCIES
+   xdg
+ 
+ RUBY VERSION
+-   ruby 3.3.5p100
++   ruby 3.4.4p34
+ 
+ BUNDLED WITH
+    2.6.6
+docs/MANUAL_INSTALL.md
+@@ -19,11 +19,11 @@ Required components:
+ First, verify if you have the required dependencies:
+ 
+ ```bash
+-ruby --version       # Should be 3.1+
+-bundler --version    # Should be 2.5.x
+-node --version
+...
+ted.
++> [!INFO]
++> If you see audit-related errors when installing pnpm with sudo, this is normal in containers or minimal systems where audit capabilities are limited.
+ 
+ ### 2. Get the Source
+
+First failing CI snippet:
+
+
+Top review comments:
+## Unpinned tag for a non-immutable Action in workflow
+
+Unpinned 3rd party Action 'Validate YAML config' step [Uses Step](1) uses 'ruby/setup-ruby' with ref '1', not a pinned commit hash
+
+[Show more details](https://github.com/onetimesecret/onetimesecret/security/code-scanning/110)
+---
+## Unpinned tag for a non-immutable Action in workflow
+
+Unpinned 3rd party Action 'Validate YAML config' step [Uses Step](1) uses 'pnpm/action-setup' with ref 'v4', not a pinned commit hash
+
+[Show more details](https://github.com/onetimesecret/onetimesecret/security/code-scanning/111)
+---
+## Missing regular expression anchor
+
+When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it.
+
+[Show more details](https://github.com/onetimesecret/onetimesecret/security/code-scanning/114)
+---
+## Missing regular expression anchor
+
+When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it.
+...
+xpected results or security vulnerabilities.**
+
+[lib/onetime/utils.rb [66-70]](https://github.com/onetimesecret/onetimesecret/pull/1538/files#diff-d3b39d484ebea036145dfde45fc94a97d608eed8c90970f9cf0d78a2c2c65845R66-R70)
+
+```diff
+ def secure_shorten_id(hash, bits: 192, encoding: 36)
++  raise ArgumentError, "Hash must be 64 hex characters (256 bits)" unless hash.length == 64
+   # Truncate to desired bit length
+   truncated = hash.to_i(16) >> (256 - bits)
+   truncated.to_s(encoding)
+ end
+```
+
+
+`[To ensure code accuracy, apply this suggestion manually]`
+
+<details><summary>Suggestion importance[1-10]: 7</summary>
+
+__
+
+Why: The suggestion correctly identifies that `secure_shorten_id` lacks input validation for the `hash` length, which is a good defensive programming practice for a public utility method.
+
+
+</details></details></td><td align=center>Medium
+
+</td></tr>
+<tr><td align="center" colspan="2">
+
+- [ ] More <!-- /improve --more_suggestions=true -->
+
+</td><td></td></tr></tbody></table>
+
+
+
+Commit messages (for context):
+Update dev commands to support valkey-server
+
+e.g. ${REDIS_SERVER:-valkey-server}
+Merge pull request #1513 from onetimesecret/valkey-commands
+
+Update dev commands to support valkey-server via REDIS_SERVER env var
+[#RUBY-3] Recommend Ruby 3.4+
+Merge pull request #1514 from onetimesecret/ruby-3.4
+
+Recommend Ruby 3.4+
+[#1512] Merge branch 'feature/initialization' into 1512-add-v2customeruser_type-and-related-fields
+[#1512] Clean boot time logging
+[#1512] Improve naming for PrintBootReceipt
+[#1512] 
+...
+* - `get_record_data` and `update_record_fields`
+5. **`records_would_update` tracking** - Overly complex differentiation
+[#1512] Re-add interactive debugging
+
+Can only be enabled by manually setting @interactive to true. Leaving
+it in b/c we may need to debug at that level when running in prod.
+[#1512] Fix updated record stats collection
+[#1512] Add Customer#user_deleted_self? method
+[#1512] Add complimentary redis commands
+[#1512] Remove example migration
+[#1512] Refine customer objid migration
