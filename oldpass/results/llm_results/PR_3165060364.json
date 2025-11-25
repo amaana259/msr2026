@@ -1,0 +1,1 @@
+{"labels":["test_failure","logic_bug"],"evidence":["fix: Fix NIP test failures","Fix Effect Exit.isSuccess/isFailure usage","Skip complex encryption tests that require proper ECDH"],"confidence":"high"}

@@ -1,6 +1,0 @@
-labels,evidence,confidence,id,valid_evidence_count
-['insufficient_context'],"['First failing CI snippet:', 'Top review comments:']",low,3164736230,2
-['insufficient_context'],"['First failing CI snippet:', 'Top review comments:']",low,3164567685,2
-"['build_setup', 'logic_bug', 'test_failure']","['Fix undefined symbol causing build failure.', 'The pipeline shows unix.TIOCGETA is undefined, causing a build error.', 'Failed Jobs: - Node.js CI / Build and Test - Swift CI / Build and Test macOS App']",high,3164503419,1
-['insufficient_context'],"['First failing CI snippet:', 'Top review comments:']",low,3165023078,2
-"['test_failure', 'logic_bug']","['fix: Fix NIP test failures', 'Fix Effect Exit.isSuccess/isFailure usage', 'Skip complex encryption tests that require proper ECDH']",high,3165060364,3

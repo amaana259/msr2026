@@ -1,0 +1,1 @@
+{"labels":["build_setup","logic_bug","test_failure"],"evidence":["Fix undefined symbol causing build failure.","The pipeline shows unix.TIOCGETA is undefined, causing a build error.","Failed Jobs: - Node.js CI / Build and Test - Swift CI / Build and Test macOS App"],"confidence":"high"}
