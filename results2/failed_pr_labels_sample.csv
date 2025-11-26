@@ -1,0 +1,21 @@
+pr_id,reason_label,reason_summary,confidence
+2782319973,P1_LOW_PRIORITY_OR_STALE,"The pull request was closed due to inactivity, with no recent activity or comments after January 12th, indicating it became stale and was eventually closed.",0.9
+3078034959,P1_LOW_PRIORITY_OR_STALE,"The pull request was not merged due to lack of recent engagement and inactivity, with the last activity being over a month ago.",0.8
+3087281120,P1_LOW_PRIORITY_OR_STALE,"The pull request was not merged due to lack of attention and inactivity, as indicated by the closed date being only 50 minutes after creation.",0.8
+3130234967,T1_CI_OR_TEST_FAILURE,"The PR's tests failed, but there is no information about how they failed or why they were not resolved.",0.8
+3118391729,U1_UNKNOWN,There is not enough information in the context to infer a plausible reason why the PR was closed without being merged.,0.5
+3064653320,P1_LOW_PRIORITY_OR_STALE,"The pull request was closed due to inactivity for more than 7 days, indicating that it was not prioritized or reviewed.",0.9
+3180528026,P1_LOW_PRIORITY_OR_STALE,"The pull request was closed without being merged, and the timeline shows that it remained open for 5 days before being closed, indicating a lack of attention or prioritization.",0.8
+3091868377,T1_CI_OR_TEST_FAILURE,"The PR's tests failed, but the failures were never resolved, leading to the PR being closed without being merged.",0.9
+2848928303,P1_LOW_PRIORITY_OR_STALE,"The pull request was closed without being merged, and there is no indication of a technical issue or disagreement in the review process. The PR was likely stuck in the backlog due to lack of attention.",0.8
+2970254623,P1_LOW_PRIORITY_OR_STALE,"The PR was not merged due to inactivity and lack of attention, as it remained open for more than 7 days without any significant updates or feedback.",0.9
+3262417340,U1_UNKNOWN,There is not enough information in the context to infer a plausible reason why the PR was closed without being merged.,0.5
+3154166175,T1_CI_OR_TEST_FAILURE,"The PR failed because its tests, build, or CI checks failed and those failures were never resolved.",0.9
+3155774248,T1_CI_OR_TEST_FAILURE,"The PR's tests failed, but the context does not provide information on how to resolve these failures.",0.7
+3229628332,U1_UNKNOWN,There is not enough information in the context to infer a plausible reason why the PR was closed without being merged.,0.5
+3246259935,P1_LOW_PRIORITY_OR_STALE,"The pull request was not merged due to lack of attention and inactivity, as indicated by the closed date being only one day after creation.",0.8
+3078217849,P1_LOW_PRIORITY_OR_STALE,"The PR was not merged due to inactivity and lack of attention, as it remained open for a short period before being closed without merging.",0.8
+3146059640,T1_CI_OR_TEST_FAILURE,"The PR's tests failed during the build process, and the failure was not resolved, leading to the pull request being closed without merge.",0.8
+3128406062,U1_UNKNOWN,There is not enough information in the context to infer a plausible reason why the PR was closed without being merged.,0.8
+3218595418,U1_UNKNOWN,There is not enough information in the context to infer a plausible reason why the PR was closed without being merged.,0.5
+3208215869,P1_LOW_PRIORITY_OR_STALE,"The PR was not merged due to inactivity and lack of attention, as it remained open for a short period before being closed without merging.",0.8
