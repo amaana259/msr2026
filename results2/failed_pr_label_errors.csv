@@ -1,0 +1,12 @@
+pr_id,error
+3070903485,Invalid \escape: line 4 column 173 (char 249)
+3090058584,LLM failed after 3 attempts
+3116156914,LLM failed after 3 attempts
+3128122957,LLM failed after 3 attempts
+3138967564,Invalid control character at: line 4 column 192 (char 262)
+3150270434,LLM failed after 3 attempts
+3174571618,LLM failed after 3 attempts
+3186343994,Invalid \escape: line 4 column 103 (char 170)
+3190264810,Invalid \escape: line 4 column 110 (char 177)
+3227146331,LLM failed after 3 attempts
+3266530341,"Expecting ',' delimiter: line 4 column 212 (char 288)"
